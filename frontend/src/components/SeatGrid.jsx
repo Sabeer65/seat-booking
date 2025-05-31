@@ -3,9 +3,8 @@ import axios from "axios";
 import Seat from "./Seat";
 import SeatIcon from "../SeatIcon";
 
-const API_URL = "http://localhost:5001/api/seats";
-
 const SeatGrid = ({ onBookingSuccess }) => {
+  const API_URI = import.meta.env.VITE_API_URL;
   const [seats, setSeats] = useState([]);
   const [selectedSeatIds, setSelectedSeatIds] = useState([]);
   const [selectedSeatNumbers, setSelectedSeatNumbers] = useState([]);
@@ -19,7 +18,7 @@ const SeatGrid = ({ onBookingSuccess }) => {
   const fetchSeats = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get(API_URI);
       setSeats(response.data);
       setError("");
     } catch (err) {
@@ -45,6 +44,7 @@ const SeatGrid = ({ onBookingSuccess }) => {
         : [...prevSelectedNums, seatNum]
     );
   };
+  console.log(seats);
 
   const handleBookSeats = async () => {
     if (selectedSeatIds.length === 0) {
@@ -53,7 +53,7 @@ const SeatGrid = ({ onBookingSuccess }) => {
     }
     setError("");
     try {
-      const response = await axios.post(`${API_URL}/book`, {
+      const response = await axios.post(`${API_URI}/book`, {
         seatIds: selectedSeatIds,
       });
       alert(
